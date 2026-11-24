@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Construct AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h2>CONSTRUCT AI</h2>
+        <span>Создавай свои идеи</span>
+    </header>
+
+    <main>
+
+        <h1>Преврати свою идею в реальность</h1>
+
+        <p>
+            Опиши предмет, который хочешь создать.
+            Мы поможем воплотить твою задумку.
+        </p>
+
+        <form method="POST">
+
+            <textarea
+                name="description"
+                placeholder="Например: хочу деревянный стул из дуба..."
+                required
+            >{{ description }}</textarea>
+
+            <button type="submit">
+                Создать модель
+            </button>
+
+        </form>
+
+{% if result %}
+    <div style="margin-top: 20px; padding: 15px; background: #eef; border-radius: 8px;">
+        <p><strong>Результат:</strong> {{ result }}</p>
+    </div>
+{% endif %}
+
+        {% if result %}
+            <div class="result">
+                {{ result }}
+            </div>
+        {% endif %}
+
+    </main>
+
+</body>
+</html>
