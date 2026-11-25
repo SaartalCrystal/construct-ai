@@ -44,10 +44,6 @@
         </form>
 
 {% if result %}
-    <div style="margin-top: 20px; padding: 15px; background: #eef; border-radius: 8px;">
-        <p><strong>Результат:</strong> {{ result }}</p>
-        <p style="color: red; font-size: 20px;"><strong>Текст, который видит 3D:</strong> <span id="debug-text"></span></p>
-    </div>
 
         <span id="user-input" style="display: none;">{{ result }}</span>
 
@@ -170,13 +166,52 @@ if (userText.includes("красн")) {
     cubeColor = 0xffffff; // Белый
 }
 
-// Создаём материал с выбранным цветом
-       const material = new THREE.MeshStandardMaterial({ color: cubeColor });
-      const cube = new THREE.Mesh(geometry, material);
-// Применяем изменения пропорций
-cube.scale.set(scaleX, scaleY, scaleZ);
+    // Создаём материал с выбранным цветом
+    const material = new THREE.MeshStandardMaterial({ color: cubeColor });
+    
+    // Создаем пустой контейнер (объект), в который будем складывать части
+    const cube = new THREE.Group(); 
 
-    scene.add(cube); // Добавляем куб в сцену
+    // Проверяем: если написано "стол", собираем стол. Иначе — делаем обычную фигуру.
+    if (userText.includes("стол")) {
+        
+        // 1. Столешница (широкая и плоская)
+        const topGeo = new THREE.BoxGeometry(2, 0.2, 1);
+        const top = new THREE.Mesh(topGeo, material);
+        top.position.y = 0.5; // Поднимаем её наверх
+        cube.add(top);
+
+        // 2. Ножки стола (4 штуки)
+        const legGeo = new THREE.BoxGeometry(0.2, 1, 0.2);
+        
+        // Ножка 1 (передняя левая)
+        const leg1 = new THREE.Mesh(legGeo, material);
+        leg1.position.set(-0.8, -0.1, -0.4);
+        cube.add(leg1);
+
+        // Ножка 2 (передняя правая)
+        const leg2 = new THREE.Mesh(legGeo, material);
+        leg2.position.set(0.8, -0.1, -0.4);
+        cube.add(leg2);
+
+        // Ножка 3 (задняя левая)
+        const leg3 = new THREE.Mesh(legGeo, material);
+        leg3.position.set(-0.8, -0.1, 0.4);
+        cube.add(leg3);
+
+        // Ножка 4 (задняя правая)
+        const leg4 = new THREE.Mesh(legGeo, material);
+        leg4.position.set(0.8, -0.1, 0.4);
+        cube.add(leg4);
+        
+    } else {
+        // Если это не стол, то просто берем нашу фигуру (геометрию) и создаем её
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.scale.set(scaleX, scaleY, scaleZ);
+        cube.add(mesh);
+    }
+
+    scene.add(cube); // Добавляем собранный объект в сцену
 
     // 6. Добавляем свет (иначе куб будет чёрным)
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
