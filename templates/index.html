@@ -46,6 +46,7 @@
 {% if result %}
     <div style="margin-top: 20px; padding: 15px; background: #eef; border-radius: 8px;">
         <p><strong>Результат:</strong> {{ result }}</p>
+        <p style="color: red; font-size: 20px;"><strong>Текст, который видит 3D:</strong> <span id="debug-text"></span></p>
     </div>
 
         <span id="user-input" style="display: none;">{{ result }}</span>
@@ -117,22 +118,43 @@ if (resultTextElement) {
 }
 
 // Выбираем размер
-let cubeSize = 1; // Обычный размер
-if (userText.includes("больш")) {
-    cubeSize = 2;
-} else if (userText.includes("маленьк")) {
-    cubeSize = 0.5;
-}
+    // 1. Базовый размер
+    let baseSize = 1; 
+    if (userText.includes("больш")) baseSize = 2;
+    if (userText.includes("маленьк")) baseSize = 0.5;
 
-// Выбираем форму
-let geometry;
-if (userText.includes("шар") || userText.includes("кругл")) {
-    geometry = new THREE.SphereGeometry(cubeSize / 2, 32, 32); 
-} else if (userText.includes("цилиндр") || userText.includes("труб")) {
-    geometry = new THREE.CylinderGeometry(cubeSize / 2, cubeSize / 2, cubeSize, 32);
-} else {
-    geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-}
+    // 2. Пропорции
+    let scaleX = 1;
+    let scaleY = 1;
+    let scaleZ = 1;
+
+    // 3. Сжатие и вытягивание
+    if (userText.includes("высок") || userText.includes("ножк") || userText.includes("длин")) {
+        scaleY = 3; // Тянем вверх
+    }
+    if (userText.includes("плоск") || userText.includes("низк") || userText.includes("крыш")) {
+        scaleY = 0.2; // Сжимаем в блин
+    }
+    if (userText.includes("широк") || userText.includes("толст")) {
+        scaleX = 2;
+        scaleZ = 2;
+    }
+
+    // 4. Сама форма
+    let geometry;
+    if (userText.includes("шар") || userText.includes("кругл")) {
+        geometry = new THREE.SphereGeometry(baseSize / 2, 32, 32); 
+    } else if (userText.includes("цилиндр") || userText.includes("труб")) {
+        if (userText.includes("пирамид") || userText.includes("усечен")) {
+            geometry = new THREE.CylinderGeometry(baseSize / 4, baseSize / 2, baseSize, 32); 
+        } else {
+            geometry = new THREE.CylinderGeometry(baseSize / 2, baseSize / 2, baseSize, 32);
+        }
+    } else if (userText.includes("пирамид") || userText.includes("треуголь")) {
+        geometry = new THREE.ConeGeometry(baseSize / 2, baseSize, 4); 
+    } else {
+        geometry = new THREE.BoxGeometry(baseSize, baseSize, baseSize);
+    }
 
 // Выбираем цвет в зависимости от слов в тексте
 let cubeColor = 0x3498db; // По умолчанию синий
@@ -151,7 +173,8 @@ if (userText.includes("красн")) {
 // Создаём материал с выбранным цветом
        const material = new THREE.MeshStandardMaterial({ color: cubeColor });
       const cube = new THREE.Mesh(geometry, material);
-
+// Применяем изменения пропорций
+cube.scale.set(scaleX, scaleY, scaleZ);
 
     scene.add(cube); // Добавляем куб в сцену
 
