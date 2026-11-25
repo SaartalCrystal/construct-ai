@@ -108,13 +108,30 @@ scene.background = bgTexture; // Ставим как фон
     container.appendChild(renderer.domElement); // Кладём "холст" в наш прямоугольник
 
     // 5. Создаём геометрию (форму куба) и материал (из чего он сделан)
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-   // Получаем текст, который написал пользователь (если он есть)
+   
+// Получаем текст
 const resultTextElement = document.getElementById('user-input');
 let userText = "";
-
 if (resultTextElement) {
-    userText = resultTextElement.innerText.toLowerCase(); // Приводим к нижнему регистру
+    userText = resultTextElement.innerText.toLowerCase();
+}
+
+// Выбираем размер
+let cubeSize = 1; // Обычный размер
+if (userText.includes("больш")) {
+    cubeSize = 2;
+} else if (userText.includes("маленьк")) {
+    cubeSize = 0.5;
+}
+
+// Выбираем форму
+let geometry;
+if (userText.includes("шар") || userText.includes("кругл")) {
+    geometry = new THREE.SphereGeometry(cubeSize / 2, 32, 32); 
+} else if (userText.includes("цилиндр") || userText.includes("труб")) {
+    geometry = new THREE.CylinderGeometry(cubeSize / 2, cubeSize / 2, cubeSize, 32);
+} else {
+    geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 }
 
 // Выбираем цвет в зависимости от слов в тексте
@@ -132,17 +149,9 @@ if (userText.includes("красн")) {
 }
 
 // Создаём материал с выбранным цветом
-const material = new THREE.MeshStandardMaterial({ color: cubeColor });
-    const cube = new THREE.Mesh(geometry, material);
+       const material = new THREE.MeshStandardMaterial({ color: cubeColor });
+      const cube = new THREE.Mesh(geometry, material);
 
-// Выбираем размер куба в зависимости от слов
-if (userText.includes("больш")) {
-    cube.scale.set(2, 2, 2);     // Большой
-} else if (userText.includes("маленьк")) {
-    cube.scale.set(0.5, 0.5, 0.5); // Маленький
-} else {
-    cube.scale.set(1, 1, 1);     // Обычный
-}
 
     scene.add(cube); // Добавляем куб в сцену
 
