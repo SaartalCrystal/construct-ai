@@ -73,7 +73,30 @@
 
     // 2. Создаём сцену (мир, где будет жить наш 3D-объект)
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x222222); // Темно-серый фон для контраста
+
+// Создаём невидимый холст 2x2 пикселя для клеточек
+const bgCanvas = document.createElement('canvas');
+bgCanvas.width = 2;
+bgCanvas.height = 2;
+const bgCtx = bgCanvas.getContext('2d');
+
+// Цвет 1: тёмный серо-фиолетовый
+bgCtx.fillStyle = '#2e2e3e'; 
+bgCtx.fillRect(0, 0, 2, 2);
+
+// Цвет 2: светлый серо-фиолетовый
+bgCtx.fillStyle = '#4a4a66'; 
+bgCtx.fillRect(0, 0, 1, 1); // левый верхний квадрат
+bgCtx.fillRect(1, 1, 1, 1); // правый нижний квадрат
+
+// Превращаем холст в текстуру и ставим на фон
+const bgTexture = new THREE.CanvasTexture(bgCanvas);
+bgTexture.wrapS = THREE.RepeatWrapping; // Повторять по горизонтали
+bgTexture.wrapT = THREE.RepeatWrapping; // Повторять по вертикали
+bgTexture.magFilter = THREE.NearestFilter; // Чтобы клеточки были чёткими, а не размытыми
+bgTexture.repeat.set(20, 20); // Размер клетки (20x20 штук на экране)
+
+scene.background = bgTexture; // Ставим как фон
 
     // 3. Создаём камеру (наши "глаза" в этом мире)
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
@@ -102,11 +125,25 @@ if (userText.includes("красн")) {
     cubeColor = 0x00ff00; // Зеленый
 } else if (userText.includes("желт") || userText.includes("жёлт")) {
     cubeColor = 0xffff00; // Желтый
+} else if (userText.includes("черн")) {
+    cubeColor = 0x000000; // Черный
+} else if (userText.includes("бел")) {
+    cubeColor = 0xffffff; // Белый
 }
 
 // Создаём материал с выбранным цветом
 const material = new THREE.MeshStandardMaterial({ color: cubeColor });
     const cube = new THREE.Mesh(geometry, material);
+
+// Выбираем размер куба в зависимости от слов
+if (userText.includes("больш")) {
+    cube.scale.set(2, 2, 2);     // Большой
+} else if (userText.includes("маленьк")) {
+    cube.scale.set(0.5, 0.5, 0.5); // Маленький
+} else {
+    cube.scale.set(1, 1, 1);     // Обычный
+}
+
     scene.add(cube); // Добавляем куб в сцену
 
     // 6. Добавляем свет (иначе куб будет чёрным)
