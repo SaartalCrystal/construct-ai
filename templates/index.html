@@ -60,6 +60,7 @@
 
 <!-- Подключаем Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
     // 1. Находим наш контейнер (серый прямоугольник)
@@ -103,6 +104,7 @@ scene.background = bgTexture; // Ставим как фон
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement); // Кладём "холст" в наш прямоугольник
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     // 5. Создаём геометрию (форму куба) и материал (из чего он сделан)
    
@@ -228,6 +230,8 @@ if (userText.includes("красн")) {
         // Вращаем куб
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
+       
+        controls.update()
 
         // Рисуем сцену
         renderer.render(scene, camera);
