@@ -1,68 +1,163 @@
+
+/* ===== ОСНОВА ===== */
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    background: #10141c;
-    color: white;
+    min-height: 100vh;
+    background: #0b0e17;
+    color: #f1f3fa;
     font-family: Arial, sans-serif;
 }
 
+/* ===== ШАПКА ===== */
+
 header {
-    padding: 22px;
+    padding: 22px 6%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #303744;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(15,19,31,0.85);
 }
 
 header h2 {
-    color: #75aaff;
-    font-size: 18px;
+    margin: 0;
+    color: #829cff;
+    font-size: 21px;
+    letter-spacing: 2px;
 }
 
 header span {
-    color: #9ba6b8;
+    color: #8993a9;
     font-size: 13px;
 }
 
+/* ===== ГЛАВНЫЙ БЛОК ===== */
+
 main {
-    max-width: 650px;
-    margin: 100px auto;
-    padding: 20px;
+    max-width: 760px;
+    margin: 90px auto;
+    padding: 25px;
     text-align: center;
 }
 
 main h1 {
-    font-size: 36px;
+    font-size: clamp(28px, 5vw, 44px);
+    line-height: 1.2;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #ffffff, #91a8ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 main p {
-    color: #aab4c4;
-    line-height: 1.6;
+    color: #9ba7bd;
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 550px;
+    margin: 0 auto;
 }
+
+/* ===== ПОЛЕ ВВОДА ===== */
 
 textarea {
     width: 100%;
-    height: 130px;
-    padding: 15px;
-    margin-top: 25px;
-    background: #1c2431;
-    border: 1px solid #39465a;
-    border-radius: 12px;
+    height: 145px;
+    padding: 20px;
+    margin-top: 35px;
+    background: #151b2a;
+    border: 1px solid #303b56;
+    border-radius: 16px;
     color: white;
     font-size: 16px;
     resize: vertical;
+    outline: none;
+    transition: 0.25s;
 }
 
+textarea::placeholder {
+    color: #68758e;
+}
+
+textarea:focus {
+    border-color: #718cff;
+    box-shadow: 0 0 20px rgba(91,119,255,0.15);
+}
+
+/* ===== КНОПКА ===== */
+
 button {
-    margin-top: 18px;
-    padding: 15px 30px;
-    background: #3979e8;
+    margin-top: 20px;
+    padding: 16px 35px;
+    background: linear-gradient(135deg, #4778f5, #7955e8);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 5px 25px rgba(76,105,235,0.2);
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(105,111,255,0.35);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* ===== ОКНО 3D ===== */
+
+#3d-container {
+    overflow: hidden;
+    border: 1px solid #384363 !important;
+    border-radius: 18px !important;
+    background: #171b2a;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+
+#3d-container canvas {
+    display: block;
+    width: 100%;
+}
+
+/* ===== АДАПТАЦИЯ ПОД ТЕЛЕФОН ===== */
+
+@media (max-width: 600px) {
+    header {
+        padding: 18px;
+    }
+
+    header h2 {
+        font-size: 17px;
+    }
+
+    main {
+        margin: 45px auto;
+        padding: 18px;
+    }
+
+    main h1 {
+        font-size: 29px;
+    }
+
+    main p {
+        font-size: 14px;
+    }
+
+    textarea {
+        height: 125px;
+    }
+
+    button {
+        width: 100%;
+    }
 }
