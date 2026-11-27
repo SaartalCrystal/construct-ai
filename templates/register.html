@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — Construct AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    <h2>CONSTRUCT AI</h2>
+    <span>Создание аккаунта</span>
+</header>
+
+<main>
+    <h1>Регистрация</h1>
+    <p>Создай аккаунт, чтобы сохранять свои 3D-модели.</p>
+
+    {% if error %}
+        <p style="color: #ff6b6b;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input
+            type="email"
+            name="email"
+            placeholder="Электронная почта"
+            required
+            style="width: 100%; padding: 15px; margin-top: 15px; background: #1c2431; border: 1px solid #39465a; border-radius: 12px; color: white;"
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Пароль (минимум 8 символов)"
+            minlength="8"
+            required
+            style="width: 100%; padding: 15px; margin-top: 15px; background: #1c2431; border: 1px solid #39465a; border-radius: 12px; color: white;"
+        >
+
+        <button type="submit">Создать аккаунт</button>
+    </form>
+
+    <p><a href="/" style="color: #75aaff;">Вернуться на главную</a></p>
+</main>
+
+</body>
+</html>
+

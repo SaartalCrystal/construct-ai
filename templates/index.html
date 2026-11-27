@@ -15,10 +15,19 @@
 
 <body>
 
-    <header>
-        <h2>CONSTRUCT AI</h2>
-        <span>Создавай свои идеи</span>
-    </header>
+
+<header>
+    <h2>CONSTRUCT AI</h2>
+
+    <div>
+        {% if user.is_authenticated %}
+            <span>{{ user.email }}</span>
+            <a href="/logout" style="color: #75aaff; margin-left: 15px;">Выйти</a>
+        {% else %}
+            <a href="/register" style="color: #75aaff;">Регистрация</a>
+        {% endif %}
+    </div>
+</header>
 
     <main>
 
